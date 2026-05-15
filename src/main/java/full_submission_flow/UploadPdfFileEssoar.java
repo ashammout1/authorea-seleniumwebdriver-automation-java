@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.sql.SQLOutput;
 import java.time.Duration;
@@ -102,8 +103,16 @@ public class UploadPdfFileEssoar {
 
         // 13. Verify the In Moderation Info Panel appearance
         WebDriverWait wait10 = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement infopanel = wait10.until(ExpectedConditions.visibilityOfElementLocated(By.className("info-panel__wrapper")));
-        System.out.println(infopanel.isDisplayed());
+        Boolean isVisible = wait10.until(ExpectedConditions.visibilityOfElementLocated(By.className("info-panel__wrapper"))).isDisplayed();
+        Assert.assertTrue(isVisible);
+        WebDriverWait wait11 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement submittedby = wait11.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='m-0']")));
+        Assert.assertEquals(submittedby.getText(), "Submitted by: author essoar");
+        WebDriverWait wait12 = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement license = wait12.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[contains(text(),'License:')]")));
+        Assert.assertEquals(license.getText(),"License: Non-exclusive, no reuse license - Default");
+
 
 
         driver.quit();

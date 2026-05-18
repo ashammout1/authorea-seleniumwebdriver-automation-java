@@ -31,8 +31,7 @@ public class UploadPdfFileEssoar {
         //Adding wait.
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement emailInput = wait.until(
-                ExpectedConditions.elementToBeClickable(By.id("email-input")));
+        WebElement emailInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("email-input")));
 
         // 3.Click and type email then click on continue
         emailInput.click();
@@ -41,8 +40,7 @@ public class UploadPdfFileEssoar {
 
         // Add wait before click on password field
         WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement emailInput1 = wait.until(
-                ExpectedConditions.elementToBeClickable(By.id("pass-input")));
+        WebElement emailInput1 = wait.until(ExpectedConditions.elementToBeClickable(By.id("pass-input")));
         emailInput1.sendKeys("rex-preprints+essoar-author+123");
         driver.findElement(By.id("password-sign-in-btn")).click();  // Click on continue to login
 
@@ -105,11 +103,12 @@ public class UploadPdfFileEssoar {
         WebDriverWait wait10 = new WebDriverWait(driver, Duration.ofSeconds(10));
         Boolean isVisible = wait10.until(ExpectedConditions.visibilityOfElementLocated(By.className("info-panel__wrapper"))).isDisplayed();
         Assert.assertTrue(isVisible);
+
         WebDriverWait wait11 = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement submittedby = wait11.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='m-0']")));
         Assert.assertEquals(submittedby.getText(), "Submitted by: author essoar");
-        WebDriverWait wait12 = new WebDriverWait(driver, Duration.ofSeconds(10));
 
+        WebDriverWait wait12 = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement license = wait12.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[contains(text(),'License:')]")));
         Assert.assertEquals(license.getText(),"License: Non-exclusive, no reuse license - Default");
 
@@ -121,17 +120,70 @@ public class UploadPdfFileEssoar {
         driver.manage().window().maximize();
 
         //14. Login using a moderator role
+        driver.findElement(By.className("sign-in-label")).click();
+        WebDriverWait wait13 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement emailInput2 = wait13.until(ExpectedConditions.elementToBeClickable(By.id("email-input")));
+        emailInput2.click();
+        emailInput2.sendKeys("rex-preprints+essoar-moderator@atypon.com");
+        driver.findElement(By.id("sign-in-btn")).click();
 
+        WebDriverWait wait14 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement emailinput3 = wait14.until(ExpectedConditions.elementToBeClickable(By.id("pass-input")));
+        emailinput3.sendKeys("rex-preprints+essoar-moderator+123");
+        driver.findElement(By.id("password-sign-in-btn")).click();
 
+        //15. Open In Moderation page
+        driver.get("https://essopenarchive-org.authorea-stag.literatumonline.com/in-moderation");
 
+       // 16. Click on the article inside the In Moderation page
+        WebElement articleLink = driver.findElement(By.xpath("//a[contains(text(),'Does the conversion of biogenic organic nitrates')]"));
+        articleLink.click();
 
+        // 17. Click on "ACCEPT" button then on ACCEPT FOR PUBLICATION
+        WebDriverWait wait15 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement acceptButton = wait15.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//span[normalize-space()='Accept']]")));
+        acceptButton.click();
 
+        driver.findElement(By.xpath("//button[normalize-space()='YES, ACCEPT FOR PUBLICATION']")).click();
 
+        // 18. assert that the In Moderation page opened automatically after Accept the article
 
+        WebDriverWait wait16 = new WebDriverWait(driver,Duration.ofSeconds(10));
+        WebElement InModeration = wait16.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[normalize-space()='In moderation']")));
+        assert(InModeration.isDisplayed());
+        driver.get("https://essopenarchive-org.authorea-stag.literatumonline.com/action/doLogout");
+       // 19. Check the article under PUBLISHED tab
 
+        driver.get("https://essopenarchive-org.authorea-stag.literatumonline.com/");
+        WebDriverWait wait17 = new WebDriverWait(driver,Duration.ofSeconds(20));
+        WebElement loginbutton = wait17.until(ExpectedConditions.elementToBeClickable(By.className("sign-in-label")));
+        loginbutton.click();
 
+        WebDriverWait wait18 = new WebDriverWait(driver,Duration.ofSeconds(20));
+        WebElement emailinput4 = wait18.until(ExpectedConditions.elementToBeClickable(By.id("email-input")));
+        emailinput4.click();
+        emailinput4.sendKeys("rex-preprints+essoar-author@atypon.com");
+        driver.findElement(By.id("sign-in-btn")).click();  //Click on continue
 
+        WebDriverWait wait19 = new WebDriverWait(driver,Duration.ofSeconds(20));
+        WebElement emailinput5 = wait19.until(ExpectedConditions.elementToBeClickable(By.id("pass-input")));
+        emailinput5.click();
 
+        emailinput5.sendKeys("rex-preprints+essoar-author+123");
+        driver.findElement(By.id("password-sign-in-btn")).click();  // Click on continue to login
+
+        driver.get("https://essopenarchive-org.authorea-stag.literatumonline.com/my-documents"); // Open My Documents page
+
+        WebDriverWait wait20 = new WebDriverWait(driver,Duration.ofSeconds(10));
+        WebElement publishedtab = wait20.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class,'nav-link') and contains(.,'Published')]")));
+        publishedtab.click();
+
+        WebDriverWait wait21 = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement article = wait21.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[contains(@href,'/doi/full/') and contains(@aria-label,'Does the conversion')]")));
+
+        Assert.assertTrue(article.isDisplayed());
 
 
     }

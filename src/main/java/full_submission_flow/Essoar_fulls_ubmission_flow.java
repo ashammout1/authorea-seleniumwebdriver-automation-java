@@ -10,11 +10,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.sql.SQLOutput;
 import java.time.Duration;
 
 
-public class UploadPdfFileEssoar {
+public class Essoar_fulls_ubmission_flow {
     private static Object driver;
     private static Object submitButton;
     public static void main(String[] args) throws InterruptedException {
@@ -40,16 +39,15 @@ public class UploadPdfFileEssoar {
 
         // Add wait before click on password field
         WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement emailInput1 = wait.until(ExpectedConditions.elementToBeClickable(By.id("pass-input")));
+        WebElement emailInput1 = wait1.until(ExpectedConditions.elementToBeClickable(By.id("pass-input")));
         emailInput1.sendKeys("rex-preprints+essoar-author+123");
         driver.findElement(By.id("password-sign-in-btn")).click();  // Click on continue to login
 
         // 4. Make sure the login was completed through check the user profile menu appearance
         WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement profileMenu = wait.until(
-                ExpectedConditions.elementToBeClickable(By.id("profileMenu")));
-        WebElement profilemenu = driver.findElement(By.id("profileMenu"));
-        System.out.println(profilemenu.isDisplayed());
+        WebElement profileMenu = wait2.until(ExpectedConditions.elementToBeClickable(By.id("profileMenu")));
+        System.out.println(profileMenu.isDisplayed());
+
 
         // 5. Click on +Document button
         driver.findElement(By.xpath("//button[span[text()='DOCUMENT']]")).click();
@@ -63,8 +61,7 @@ public class UploadPdfFileEssoar {
 
         // 7. Wait for the extraction page then click on Submit
         WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(90));
-        WebElement submitButton = wait3.until(
-                ExpectedConditions.elementToBeClickable(By.cssSelector("button.submit-btn")));
+        WebElement submitButton = wait3.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.submit-btn")));
         submitButton.click();
 
         // 8. Click on Next

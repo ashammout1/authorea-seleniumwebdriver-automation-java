@@ -60,7 +60,7 @@ public class Essoar_fulls_ubmission_flow {
         fileInput.sendKeys("C:\\Users\\ashammout\\Downloads\\essoar.15002645_v1.pdf");
 
         // 7. Wait for the extraction page then click on Submit
-        WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(90));
+        WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(150));
         WebElement submitButton = wait3.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.submit-btn")));
         submitButton.click();
 

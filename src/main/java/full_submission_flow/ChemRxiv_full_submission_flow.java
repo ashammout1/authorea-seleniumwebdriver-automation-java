@@ -1,6 +1,7 @@
 package full_submission_flow;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,6 +37,32 @@ public class ChemRxiv_full_submission_flow {
         WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement profileMenu = wait2.until(ExpectedConditions.elementToBeClickable(By.id("profileMenu")));
         System.out.println(profileMenu.isDisplayed());
+
+        // 4. Click on +Document button
+        driver.findElement(By.xpath("//button[span[text()='DOCUMENT']]")).click();
+
+
+        // 5. Upload PDF file
+        WebElement fileInput = driver.findElement(By.cssSelector("input[type='file']"));
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].style.display='block'; arguments[0].style.opacity=1;", fileInput // remove display:none و opacity:0 from JS to make file visible
+        );
+
+        fileInput.sendKeys("C:\\Users\\ashammout\\Downloads\\chemrxiv.7097960.v1.pdf");
+
+
+        // 6. Wait for the extraction page then click on Submit
+        WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(120));
+        WebElement submitbutton = wait3.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.submit-btn")));
+        submitbutton.click();
+
+        // 7. Click on Next
+        WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement nextButton = wait4.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-next='next']")));
+        nextButton.click();
+
+
 
 
     }
